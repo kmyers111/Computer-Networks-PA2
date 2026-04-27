@@ -2,13 +2,16 @@ import random
 import time
 from tcp_tahoe import TCPTahoe
 
-def simulate(loss_prob, total_packets=100):
+def simulate(loss_prob, total_packets=500):
     tcp = TCPTahoe()
     delays = []
-
+    sim_time = 0
     start_time = time.time()
+    send_time = sim_time
+    delay = sim_time - send_time
 
     for _ in range(total_packets):
+        sim_time += 1
         packet_id = tcp.send_packet()
 
         time.sleep(0.0001)  # Simulate network delay
@@ -40,7 +43,7 @@ def simulate(loss_prob, total_packets=100):
     return throughput, avg_delay, jitter, tcp.retransmissions
 
 
-loss_values = [0.01, 0.05, 0.10]
+loss_values = [0.05, 0.10, 0.20]
 
 print("Loss\tThroughput\tAvg Delay\tjitter\tRetransmissions")
 
